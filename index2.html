@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Servo Control</title>
+  <!-- Include the Firebase JavaScript library -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+</head>
+<body>
+  <h1>Servo Control</h1>
+  <button id="lockButton">Lock</button>
+  <button id="unlockButton">Unlock</button>
+
+  <script>
+    // Initialize Firebase with your project credentials
+    var firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      databaseURL: "YOUR_DATABASE_URL",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // Get references to the buttons
+    var lockButton = document.getElementById('lockButton');
+    var unlockButton = document.getElementById('unlockButton');
+
+    // Set up Firebase reference
+    var database = firebase.database();
+    var servoControlRef = database.ref('servoControl');
+
+    // Add event listeners to the buttons
+    lockButton.addEventListener('click', function() {
+      servoControlRef.set(0); // Lock position value
+    });
+
+    unlockButton.addEventListener('click', function() {
+      servoControlRef.set(180); // Unlock position value
+    });
+
+    // Function to update the ESP32 when Firebase data changes
+    servoControlRef.on('value', function(snapshot) {
+      var servoPosition = snapshot.val();
+      // Send the servo position data to ESP32 (use appropriate method)
+    });
+  </script>
+</body>
+</html>
